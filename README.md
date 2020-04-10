@@ -32,6 +32,9 @@ No issue is creating limit on this module.
 | Name | Version |
 |------|---------|
 | aws | n/a |
+| helm | n/a |
+| kubernetes | n/a |
+| null | n/a |
 
 ## Inputs
 
@@ -52,6 +55,7 @@ No issue is creating limit on this module.
 | num\_workers | Number of workers for worker pool | `number` | `1` | no |
 | owner | Owner of the infrastructure | `string` | `""` | no |
 | prometheus\_enabled | Bool to enable prometheus | `bool` | `true` | no |
+| root\_domain\_name | The root domain - leave blank for no dns | `string` | `""` | no |
 | security\_group\_id | security group id for workers | `string` | n/a | yes |
 | stage | The stage of the deployment | `string` | `""` | no |
 | subnet\_ids | The id of the subnet. | `list(string)` | n/a | yes |

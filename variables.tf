@@ -8,7 +8,11 @@ variable "cluster_id" {}
 
 
 //variable "elb_host_name" {}
-//variable "root_domain_name" {}
+variable "root_domain_name" {
+  description = "The root domain - leave blank for no dns"
+  type        = string
+  default     = ""
+}
 
 ######
 # svcs

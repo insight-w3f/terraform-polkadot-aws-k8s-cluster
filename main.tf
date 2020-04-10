@@ -51,3 +51,16 @@ module "eks" {
 
   //  tags = module.label.tags
 }
+
+data "aws_region" "this" {}
+
+resource "null_resource" "populate_kube_config" {
+
+  triggers = {
+    always = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = "aws eks --region ${data.aws_region.this.name} update-kubeconfig --name ${var.cluster_name}"
+  }
+}
