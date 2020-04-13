@@ -4,83 +4,37 @@ variable "create" {
   default     = true
 }
 
-variable "cluster_id" {}
-
-
-//variable "elb_host_name" {}
-variable "root_domain_name" {
-  description = "The root domain - leave blank for no dns"
-  type        = string
-  default     = ""
-}
-
-######
-# svcs
-######
-variable "all_enabled" {
-  description = "Bool to enable all services"
-  type        = bool
-  default     = true
-}
-
-variable "consul_enabled" {
-  description = "Bool to enable consul"
-  type        = bool
-  default     = true
-}
-
-variable "elasticsearch_enabled" {
-  description = "Bool to enable elasticsearch"
-  type        = bool
-  default     = true
-}
-
-variable "prometheus_enabled" {
-  description = "Bool to enable prometheus"
-  type        = bool
-  default     = true
-}
-
-
-
-
 ########
 # Label
 ########
 variable "environment" {
   description = "The environment"
   type        = string
-  default     = ""
+  default     = "test"
 }
 
 variable "namespace" {
   description = "The namespace to deploy into"
   type        = string
-  default     = ""
+  default     = "polkadot"
 }
 
 variable "stage" {
   description = "The stage of the deployment"
   type        = string
-  default     = ""
+  default     = "test"
 }
 
 variable "network_name" {
   description = "The network name, ie kusama / mainnet"
   type        = string
-  default     = ""
+  default     = "kusama"
 }
 
 variable "owner" {
   description = "Owner of the infrastructure"
   type        = string
-  default     = ""
-}
-
-variable "zone" {
-  description = "The Azure zone to deploy in"
-  type        = string
-  default     = "eastus1"
+  default     = "insight"
 }
 
 

@@ -7,11 +7,11 @@ provider "aws" {
 }
 
 data "aws_eks_cluster" "cluster" {
-  name = module.defaults.cluster_id
+  name = module.eks.cluster_id
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  name = module.defaults.cluster_id
+  name = module.eks.cluster_id
 }
 
 provider "kubernetes" {
@@ -19,7 +19,7 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.cluster.token
   load_config_file       = false
-  version                = "~> 1.9"
+  version                = "1.10"
 }
 
 resource "random_pet" "this" {
@@ -33,15 +33,10 @@ module "network" {
   cluster_name = random_pet.this.id
 }
 
-module "defaults" {
+module "eks" {
   source            = "../.."
   cluster_name      = random_pet.this.id
-  cluster_id        = "testing-${random_pet.this.id}"
   security_group_id = module.network.k8s_security_group_id
   subnet_ids        = slice(module.network.public_subnets, 0, 3)
   vpc_id            = module.network.vpc_id
-}
-
-output "k8s_security_group_id" {
-  value = module.network.k8s_security_group_id
 }

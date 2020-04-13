@@ -5,7 +5,8 @@
 
 ## Features
 
-This module...
+This module sets up an EKS cluster on AWS.  It wraps the official (terraform-aws-eks)[https://github.com/terraform-aws-modules/terraform-aws-eks] 
+module with sane defaults for it's application. 
 
 ## Terraform Versions
 
@@ -13,10 +14,20 @@ For Terraform v0.12.0+
 
 ## Usage
 
-```
-module "this" {
-    source = "github.com/insight-w3f/terraform-polkadot-aws-k8s-cluster"
+```hcl-terraform
+module "network" {
+  source       = "github.com/insight-w3f/terraform-polkadot-aws-network.git?ref=master"
+  all_enabled  = true
+  num_azs      = 3
+  cluster_name = random_pet.this.id
+}
 
+module "eks" {
+  source            = "../.."
+  cluster_name      = random_pet.this.id
+  security_group_id = module.network.k8s_security_group_id
+  subnet_ids        = slice(module.network.public_subnets, 0, 3)
+  vpc_id            = module.network.vpc_id
 }
 ```
 ## Examples
@@ -32,37 +43,27 @@ No issue is creating limit on this module.
 | Name | Version |
 |------|---------|
 | aws | n/a |
-| helm | n/a |
-| kubernetes | n/a |
-| null | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
-| all\_enabled | Bool to enable all services | `bool` | `true` | no |
 | cluster\_autoscale | Do you want the cluster's worker pool to autoscale? | `bool` | `false` | no |
 | cluster\_autoscale\_max\_workers | Maximum number of workers in worker pool | `number` | `1` | no |
 | cluster\_autoscale\_min\_workers | Minimum number of workers in worker pool | `number` | `1` | no |
-| cluster\_id | n/a | `any` | n/a | yes |
 | cluster\_name | Name of the k8s cluster | `string` | n/a | yes |
-| consul\_enabled | Bool to enable consul | `bool` | `true` | no |
 | create | Bool for creation | `bool` | `true` | no |
-| elasticsearch\_enabled | Bool to enable elasticsearch | `bool` | `true` | no |
-| environment | The environment | `string` | `""` | no |
-| namespace | The namespace to deploy into | `string` | `""` | no |
-| network\_name | The network name, ie kusama / mainnet | `string` | `""` | no |
+| environment | The environment | `string` | `"test"` | no |
+| namespace | The namespace to deploy into | `string` | `"polkadot"` | no |
+| network\_name | The network name, ie kusama / mainnet | `string` | `"kusama"` | no |
 | num\_workers | Number of workers for worker pool | `number` | `1` | no |
-| owner | Owner of the infrastructure | `string` | `""` | no |
-| prometheus\_enabled | Bool to enable prometheus | `bool` | `true` | no |
-| root\_domain\_name | The root domain - leave blank for no dns | `string` | `""` | no |
+| owner | Owner of the infrastructure | `string` | `"insight"` | no |
 | security\_group\_id | security group id for workers | `string` | n/a | yes |
-| stage | The stage of the deployment | `string` | `""` | no |
+| stage | The stage of the deployment | `string` | `"test"` | no |
 | subnet\_ids | The id of the subnet. | `list(string)` | n/a | yes |
 | vpc\_id | The vpc id | `string` | n/a | yes |
 | worker\_additional\_security\_group\_ids | List of security group ids for workers | `list(string)` | `[]` | no |
 | worker\_instance\_type | The instance class for workers | `string` | `"r5.large"` | no |
-| zone | The Azure zone to deploy in | `string` | `"eastus1"` | no |
 
 ## Outputs
 
