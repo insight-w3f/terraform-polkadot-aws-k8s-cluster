@@ -28,9 +28,9 @@ resource "random_pet" "this" {
 
 module "network" {
   source       = "github.com/insight-w3f/terraform-polkadot-aws-network.git?ref=master"
-  all_enabled  = true
   num_azs      = 3
   cluster_name = random_pet.this.id
+  k8s_enabled = true
 }
 
 module "eks" {
