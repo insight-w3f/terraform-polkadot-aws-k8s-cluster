@@ -20,6 +20,7 @@ module "eks" {
   create_eks = var.create
 
   cluster_name = var.cluster_name
+  cluster_version = "1.16"
 
   subnets = var.subnet_ids
   vpc_id  = var.vpc_id
@@ -33,7 +34,9 @@ module "eks" {
     {
       name          = "workers"
       instance_type = var.worker_instance_type
-      asg_max_size  = var.num_workers
+      asg_desired_capacity = var.num_workers
+      asg_min_size = var.cluster_autoscale_min_workers
+      asg_max_size  = var.cluster_autoscale_max_workers
       //      iam_role_id = aws_iam_role.this.id
       //      iam_instance_profile_name = aws_iam_instance_profile.this.id
       tags = concat([{
