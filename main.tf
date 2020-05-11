@@ -19,7 +19,7 @@ module "eks" {
   source     = "github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v10.0.0"
   create_eks = var.create
 
-  cluster_name = var.cluster_name
+  cluster_name    = module.label.id
   cluster_version = "1.16"
 
   subnets = var.subnet_ids
@@ -32,16 +32,16 @@ module "eks" {
 
   worker_groups = [
     {
-      name          = "workers"
-      instance_type = var.worker_instance_type
+      name                 = "workers"
+      instance_type        = var.worker_instance_type
       asg_desired_capacity = var.num_workers
-      asg_min_size = var.cluster_autoscale_min_workers
-      asg_max_size  = var.cluster_autoscale_max_workers
+      asg_min_size         = var.cluster_autoscale_min_workers
+      asg_max_size         = var.cluster_autoscale_max_workers
       //      iam_role_id = aws_iam_role.this.id
       //      iam_instance_profile_name = aws_iam_instance_profile.this.id
       tags = concat([{
         key                 = "Name"
-        value               = "${var.cluster_name}-workers-1"
+        value               = "${module.label.id}-workers-1"
         propagate_at_launch = true
         }
         //      ], module.label.tags_as_list_of_maps)

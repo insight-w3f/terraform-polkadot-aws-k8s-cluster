@@ -71,10 +71,10 @@ variable "worker_instance_type" {
   default     = "r5.large"
 }
 
-variable "cluster_name" {
-  description = "Name of the k8s cluster"
-  type        = string
-}
+//variable "cluster_name" {
+//  description = "Name of the k8s cluster"
+//  type        = string
+//}
 
 //variable "k8s_version" {
 //  description = "Version of k8s to use - override to use a version other than `latest`"

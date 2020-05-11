@@ -51,7 +51,6 @@ No issue is creating limit on this module.
 | cluster\_autoscale | Do you want the cluster's worker pool to autoscale? | `bool` | `false` | no |
 | cluster\_autoscale\_max\_workers | Maximum number of workers in worker pool | `number` | `1` | no |
 | cluster\_autoscale\_min\_workers | Minimum number of workers in worker pool | `number` | `1` | no |
-| cluster\_name | Name of the k8s cluster | `string` | n/a | yes |
 | create | Bool for creation | `bool` | `true` | no |
 | environment | The environment | `string` | `"test"` | no |
 | namespace | The namespace to deploy into | `string` | `"polkadot"` | no |
