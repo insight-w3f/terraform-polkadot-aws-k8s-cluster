@@ -1,5 +1,3 @@
-
-
 module "label" {
   source = "github.com/robc-io/terraform-null-label.git?ref=0.16.1"
   tags = {
@@ -14,7 +12,6 @@ module "label" {
   stage       = var.stage
 }
 
-
 module "eks" {
   source     = "github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v10.0.0"
   create_eks = var.create
@@ -28,40 +25,39 @@ module "eks" {
   cluster_security_group_id            = var.security_group_id
   worker_additional_security_group_ids = var.worker_additional_security_group_ids
 
-  //  manage_worker_iam_resources = true
-
   worker_groups = [
     {
-      name                 = "workers"
+      name                 = "on-demand-workers-1"
       instance_type        = var.worker_instance_type
       asg_desired_capacity = var.num_workers
       asg_min_size         = var.cluster_autoscale_min_workers
       asg_max_size         = var.cluster_autoscale_max_workers
-      //      iam_role_id = aws_iam_role.this.id
-      //      iam_instance_profile_name = aws_iam_instance_profile.this.id
+      kubelet_extra_args   = "--node-labels=node.kubernetes.io/lifecycle=normal"
+      suspended_processes  = ["AZRebalance"]
       tags = concat([{
         key                 = "Name"
-        value               = "${module.label.id}-workers-1"
+        value               = "${module.label.id}-on-demand-workers-1"
         propagate_at_launch = true
         }
-        //      ], module.label.tags_as_list_of_maps)
       ])
-    }
+      }, var.use_spot_instances ? {
+      name                 = "spot-workers-1"
+      instance_type        = var.worker_instance_type
+      asg_desired_capacity = var.spot_num_workers
+      asg_min_size         = var.spot_cluster_min_workers
+      asg_max_size         = var.spot_cluster_max_workers
+      kubelet_extra_args   = "--node-labels=node.kubernetes.io/lifecycle=spot"
+      suspended_processes  = ["AZRebalance"]
+      tags = concat([{
+        key                 = "Name"
+        value               = "${module.label.id}-spot-workers-1"
+        propagate_at_launch = true
+        }
+      ])
+    } : null
   ]
 
   tags = module.label.tags
 }
 
 data "aws_region" "this" {}
-
-//resource "null_resource" "populate_kube_config" {
-//
-//  triggers = {
-//    always = timestamp()
-//  }
-//
-//  provisioner "local-exec" {
-////    command = "aws eks --region ${data.aws_region.this.name} update-kubeconfig --name ${module.eks.cluster_id}"
-//    command = "echo ${module.eks.cluster_id}"
-//  }
-//}
