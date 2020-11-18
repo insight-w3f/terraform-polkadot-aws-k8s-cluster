@@ -105,3 +105,33 @@ variable "cluster_autoscale_max_workers" {
   type        = number
   default     = 1
 }
+
+variable "use_spot_instances" {
+  description = "Bool to enable use of spot instances as well as on-demand"
+  type        = bool
+  default     = false
+}
+
+variable "spot_autoscale" {
+  description = "Bool to enable the use of autoscaler in spot pool"
+  type        = bool
+  default     = false
+}
+
+variable "spot_cluster_min_workers" {
+  description = "Minimum number of workers in SPOT pool"
+  type        = number
+  default     = 0
+}
+
+variable "spot_cluster_max_workers" {
+  description = "Maximum number of workers in SPOT pool"
+  type        = number
+  default     = 10
+}
+
+variable "spot_num_workers" {
+  description = "Number of workers in SPOT pool when autoscaling disabled"
+  type        = number
+  default     = 1
+}

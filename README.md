@@ -38,6 +38,10 @@ module "eks" {
 No issue is creating limit on this module.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+No requirements.
+
 ## Providers
 
 | Name | Version |
@@ -47,7 +51,7 @@ No issue is creating limit on this module.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | cluster\_autoscale | Do you want the cluster's worker pool to autoscale? | `bool` | `false` | no |
 | cluster\_autoscale\_max\_workers | Maximum number of workers in worker pool | `number` | `1` | no |
 | cluster\_autoscale\_min\_workers | Minimum number of workers in worker pool | `number` | `1` | no |
@@ -58,8 +62,13 @@ No issue is creating limit on this module.
 | num\_workers | Number of workers for worker pool | `number` | `1` | no |
 | owner | Owner of the infrastructure | `string` | `"insight"` | no |
 | security\_group\_id | security group id for workers | `string` | n/a | yes |
+| spot\_autoscale | Bool to enable the use of autoscaler in spot pool | `bool` | `false` | no |
+| spot\_cluster\_max\_workers | Maximum number of workers in SPOT pool | `number` | `10` | no |
+| spot\_cluster\_min\_workers | Minimum number of workers in SPOT pool | `number` | `0` | no |
+| spot\_num\_workers | Number of workers in SPOT pool when autoscaling disabled | `number` | `1` | no |
 | stage | The stage of the deployment | `string` | `"test"` | no |
 | subnet\_ids | The id of the subnet. | `list(string)` | n/a | yes |
+| use\_spot\_instances | Bool to enable use of spot instances as well as on-demand | `bool` | `false` | no |
 | vpc\_id | The vpc id | `string` | n/a | yes |
 | worker\_additional\_security\_group\_ids | List of security group ids for workers | `list(string)` | `[]` | no |
 | worker\_instance\_type | The instance class for workers | `string` | `"r5.large"` | no |
