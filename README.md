@@ -47,6 +47,8 @@ No requirements.
 | Name | Version |
 |------|---------|
 | aws | n/a |
+| helm | n/a |
+| template | n/a |
 
 ## Inputs
 
